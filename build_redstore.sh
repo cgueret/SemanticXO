@@ -11,7 +11,7 @@ GET="wget --quiet"
 DIRECTORY=$(cd `dirname $0` && pwd)
 WORKDIR="/tmp"
 TARGET="${WORKDIR}/build"
-mkdir -p "${TARGET}/lib/pkgconfig"
+mkdir -p ${TARGET}/lib/pkgconfig
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export CC="gcc -m32"
 export CXX="g++ -m32"
@@ -27,7 +27,7 @@ function compile() {
 	shift
 	if [ ! -f ${WORKDIR}/$item.tgz ]; then
 		echo "Download $item"
-		${GET} http://download.librdf.org/source/$1.tar.gz --output-document=${WORKDIR}/$item.tgz 
+		${GET} http://download.librdf.org/source/$item.tar.gz --output-document=${WORKDIR}/$item.tgz 
 	fi
 	cd ${WORKDIR}
 	tar xzf $item.tgz
