@@ -58,16 +58,9 @@ make >/dev/null
 make install >/dev/null
 cd ${DIRECTORY}
 
-# Get needed stuff
-cp ${TARGET}/bin/redstore ${DIRECTORY}/redstore_daemon
+# Copy all the needed pieces
+cp ${TARGET}/bin/redstore ${DIRECTORY}/redstored
 cp ${TARGET}/lib/libraptor2.so.0 ${DIRECTORY}
 cp ${TARGET}/lib/librasqal.so.2 ${DIRECTORY}
 cp ${TARGET}/lib/librdf.so.0 ${DIRECTORY}
-
-# Generate the wrapper script
-echo "#!/bin/bash" > wrapper.sh
-echo "export LD_LIBRARY_PATH=\"\$LD_LIBRARY_PATH:.\"" >> wrapper.sh
-echo "./redstore_daemon -s sqlite" >> wrapper.sh
-chmod  +x wrapper.sh
-
 
