@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define the versions to compile
-REDSTORE="redstore-0.5.1"
-RAPTOR="raptor2-1.9.1"
-RASQAL="rasqal-0.9.21"
-REDLAND="redland-1.0.12"
+REDSTORE="redstore-0.5.2"
+RAPTOR="raptor2-2.0.4"
+RASQAL="rasqal-0.9.27"
+REDLAND="redland-1.0.14"
 
 # Common stuff
 GET="wget --quiet"
@@ -20,6 +20,7 @@ export CHOST="i686-unknown-linux-gnu"
 export CFLAGS="-march=i686 -mtune=generic -O2 -pipe"
 export CXXFLAGS="-march=i686 -mtune=generic -O2 -pipe"
 export PKG_CONFIG_PATH="${TARGET}/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="/usr/lib32:$LD_LIBRARY_PATH"
 
 # Download and compile one of the dependencies
 function compile() {
@@ -42,9 +43,9 @@ function compile() {
 }
 
 # Compile all the dependencies
-compile ${RAPTOR} 
-compile ${RASQAL}  --with-raptor=${TARGET} --enable-raptor2 
-compile ${REDLAND} --with-raptor=${TARGET} --enable-raptor2 --enable-storages=sqlite --disable-modular --with-postgresql=no --with-virtuoso=no --with-mysql=no  
+compile ${RAPTOR}
+compile ${RASQAL}
+compile ${REDLAND} --enable-storages=sqlite --disable-modular --with-postgresql=no --with-virtuoso=no --with-mysql=no
 
 # Download and compile redstore
 if [ ! -f redstore.tgz ]; then
@@ -60,7 +61,7 @@ cd ${DIRECTORY}
 
 # Copy all the needed pieces
 cp ${TARGET}/bin/redstore ${DIRECTORY}/redstored
-cp ${TARGET}/lib/libraptor2.so.0 ${DIRECTORY}
-cp ${TARGET}/lib/librasqal.so.2 ${DIRECTORY}
-cp ${TARGET}/lib/librdf.so.0 ${DIRECTORY}
+cp ${TARGET}/lib/libraptor2.so.0.0.0 ${DIRECTORY}
+cp ${TARGET}/lib/librasqal.so.3.0.0 ${DIRECTORY}
+cp ${TARGET}/lib/librdf.so.0.0.0 ${DIRECTORY}
 
