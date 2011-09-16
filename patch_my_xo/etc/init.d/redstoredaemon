@@ -1,0 +1,71 @@
+#!/bin/sh
+#
+# redstoredaemon: RedStore daemon
+#
+# chkconfig: 345 26 74
+# description: This daemon controls the triple store RedStore
+# processname: redstored
+# pidfile: /var/run/redstored.pid
+#
+# (file copied from hald and modified)
+
+# Sanity checks.
+[ -x /opt/redstore/redstore ] || exit 0
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# so we can rearrange this easily
+servicename=redstoredaemon
+
+RETVAL=0
+
+start() {
+    echo -n $"Starting RedStore daemon: "
+    daemon --check $servicename /opt/redstore/wrapper.sh
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$servicename
+}
+
+stop() {
+    echo -n $"Stopping RedStore daemon: "
+
+    killproc redstored -TERM
+    RETVAL=$?
+    echo
+    if [ $RETVAL -eq 0 ]; then
+        rm -f /var/lock/subsys/$servicename
+        rm -f /var/run/redstored.pid
+    fi
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status redstored
+        RETVAL=$?
+        ;;
+    restart)
+        stop
+	sleep 3
+        start
+        ;;
+    condrestart)
+        if [ -f /var/lock/subsys/$servicename ]; then
+            stop
+	    sleep 3
+            start
+        fi
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+        ;;
+esac
+exit $RETVAL
