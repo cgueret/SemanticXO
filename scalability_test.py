@@ -40,7 +40,7 @@ def generate_journal_entry():
     
 if __name__ == '__main__':
     gc.disable()
-    for i in range(0, 5000):
+    for i in range(0, 50):
         start = time.time()
         generate_journal_entry()
         end = time.time()
