@@ -3,16 +3,11 @@ DIRECTORY=$(cd `dirname $0` && pwd)
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${DIRECTORY}"
 cd ${DIRECTORY}
 
-# We want to use a sqlite backend for the data
-FLAGS="-s sqlite "
-
-# Check if the database need to be created
-if [ ! -f redstore ]; then
-	FLAGS="${FLAGS} -n "
-fi
+# We want to use an hashes + bdb backend for the data
+FLAGS="-s hashes -t \"hash-type='bdb',dir='/var/lib/redstore'\" "
 
 # Start the process
-./redstored ${FLAGS} >/dev/null &
+${DIRECTORY}/redstored ${FLAGS} >/dev/null &
 
 
 
