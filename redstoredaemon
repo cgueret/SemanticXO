@@ -10,7 +10,7 @@
 # (file copied from hald and modified)
 
 # Sanity checks.
-[ -x /opt/redstore/redstored ] || exit 0
+[ -x /opt/redstore/redstore ] || exit 0
 
 # Source function library.
 . /etc/rc.d/init.d/functions

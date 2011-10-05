@@ -7,7 +7,7 @@ cd ${DIRECTORY}
 FLAGS="-s hashes -t \"hash-type='bdb',dir='/var/lib/redstore'\" "
 
 # Start the process
-${DIRECTORY}/redstored ${FLAGS} >/dev/null &
+${DIRECTORY}/redstore ${FLAGS} >/dev/null &
 
 
 
