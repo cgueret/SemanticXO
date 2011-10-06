@@ -6,11 +6,11 @@ Created on 5 Oct 2011
 
 files=['output-time-write.csv', 'output-time-read.csv', 'output-space.csv']
 
-def post_process(directory):
+def post_process():
     avg = {}
     for file in files:
         runs = []
-        for line in open('%s/%s' % (directory, file), 'r').readlines():
+        for line in open('%s' % file, 'r').readlines():
             runs.append(line.split(','))
         avg[file] = []
         for res_idx in range(0, len(runs[0])-1):
@@ -21,7 +21,7 @@ def post_process(directory):
             avg[file].append(float("%.4f" % res))
     
     keys = sorted(avg.keys())
-    f = open('%s/averages.dat' % directory, 'w')
+    f = open('averages.dat', 'w')
     f.write("# run ")
     f.write(" ".join(keys))
     f.write("\n")
@@ -33,4 +33,4 @@ def post_process(directory):
     f.close()
 
 if __name__ == '__main__':
-    post_process('performance')
+    post_process()
