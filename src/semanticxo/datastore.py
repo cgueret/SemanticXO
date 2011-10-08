@@ -18,19 +18,18 @@ class TripleStore(object):
     '''
     The TripleStore is a generic object interface with a triple store
     '''
-    def __init__(self, params = None):
+    
+    def __init__(self, hostname=None):
         '''
         Constructor of the TripleStore
         if an hostname is indicated, query the triple store of that machine
         instead of the one at localhost
         '''
-        hostname = 'localhost'
-        if params != None:
-            if 'hostname' in params.keys():
-                hostname = params['hostname']
+        if hostname == None:
+            hostname = 'localhost'
         self.store_url = '%s:8080' % hostname
-        print self.store_url
         self.device_uid = 'ABC1234567890' #TODO find how to get the serial number
+
 
     def _get_resource(self, uid):
         '''
@@ -38,16 +37,34 @@ class TripleStore(object):
         '''
         return URIRef(OLPC['resource/%s' % uid])
 
+
+    def get_uids(self):
+        '''
+        Return all the UIDs of the DSObjects stored in that store
+        '''
+        query = """
+        SELECT ?uid WHERE {
+            ?entry <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <%s>.
+            ?entry <%s> ?uid.
+        }
+        """ % (OLPC_TERMS['DSObject'], OLPC_TERMS['uid'])
+        uids = []
+        sparql = SPARQL(self.store_url)
+        for result in sparql.execute_select(query):
+            uids.append(result['uid'])
+        return uids
+
+    
     def get_object(self, uid, properties=None):
         '''
         Get a specific object associated to this UID
         '''
         metadata = {}
         query = 'SELECT ?p ?o WHERE { <%s> ?p ?o. }' % self._get_resource(uid)
-        sparql = SPARQL()
+        sparql = SPARQL(self.store_url)
         for result in sparql.execute_select(query):
             if result['p'].startswith(OLPC_TERMS):
-                key=result['p'].split(OLPC_TERMS)[1]
+                key = result['p'].split(OLPC_TERMS)[1]
                 if key in _QUERY_INT_KEY:
                     metadata[key] = int(result['o'])
                 else:
@@ -58,6 +75,7 @@ class TripleStore(object):
             metadata['creation_time'] = int(time.time())
 
         return metadata
+
     
     def store_object(self, uid, metadata):
         '''
@@ -97,7 +115,7 @@ class TripleStore(object):
                     pass
                 
         # Save it
-        logging.debug('[MDS] save > %s' % graph.serialize())
+        logging.debug('[DataStore] save > %s' % graph.serialize())
         headers = { 'Accept' : '*/*', 'Content-Type': 'application/rdf+xml' }
         conn = httplib.HTTPConnection(self.store_url)
         conn.request("PUT", "/data/%s" % resource, body=graph.serialize(), headers=headers)

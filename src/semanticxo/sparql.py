@@ -14,11 +14,11 @@ class SPARQL(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, url):
         '''
         Constructor
         '''
-        self._url = '127.0.0.1:8080'
+        self._url = url
         
     def execute_select(self, query):
         params = {'query': query, 'format' : 'json'}
