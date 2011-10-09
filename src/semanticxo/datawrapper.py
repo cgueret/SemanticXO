@@ -47,6 +47,9 @@ class DataWrapper(object):
             instances.append(instance)
         return instances
     
+    def get_datastore_instance(self, uid):
+        return self._store.get_object(uid)
+    
 if __name__ == '__main__':
     wrapper = DataWrapper(store='dbpedia')
     print surf.ns.YAGO['CitiesInTheNetherlands']
