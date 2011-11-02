@@ -10,8 +10,7 @@ class MetadataPanel(object):
     '''
     def __init__(self):
         # Create the model
-        self._model = gtk.ListStore(str, str)
-        self._model.append(['Test','test value'])
+        self._model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
         
         # Create the widget
         treeview = gtk.TreeView(self._model)
@@ -41,7 +40,7 @@ class JournalPanel(object):
     '''
     def __init__(self, metadata_panel):
         # The table to select an object
-        model_resources = gtk.ListStore(str, str)
+        model_resources = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
         treeview = gtk.TreeView(model_resources)
         column = gtk.TreeViewColumn('Object')
         cell_object = gtk.CellRendererText()
