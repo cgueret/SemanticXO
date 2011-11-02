@@ -1,6 +1,6 @@
 # Set line styles
-set style line 1 lt 1 pt 7 lw .1 lc rgb "red"
-set style line 2 lt 1 pt 7 lw .1 lc rgb "blue"
+set style line 1 lt 1 pt 7 lw 1 lc rgb "red"
+set style line 2 lt 1 pt 7 lw 1 lc rgb "blue"
 set style line 3 lt 1 lw 2 lc rgb "green"
 set style line 4 lt 2 lw 1 lc rgb "orange"
 
@@ -11,7 +11,7 @@ set xrange [1:2000]
 # set xtics (1,2,5,10,25,50,100,250,500,1000,2500,10000,25000,50000)
 set xlabel "Number of entries in the data store"
 
-set pointsize 0.2
+set pointsize 0.5
 
 ########################################################################
 # Read and write times
