@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the versions to compile
-REDSTORE="redstore-git"
+REDSTORE="redstore-0.5.4"
 RAPTOR="raptor2-2.0.4"
 RASQAL="rasqal-0.9.27"
 REDLAND="redland-1.0.14"
@@ -65,10 +65,10 @@ compile_redland ${REDLAND} --disable-modular --with-postgresql=no --with-virtuos
 # Download and compile redstore
 cd ${WORKDIR}
 if [ ! -d ${REDSTORE} ]; then
-	git clone git://github.com/njh/redstore.git ${REDSTORE}
+	${GET} http://www.aelius.com/njh/redstore/${REDSTORE}.tar.gz --output-document=redstore.tgz 
+	tar xzf http://www.aelius.com/njh/redstore/${REDSTORE}.tar.gz	
 fi
 cd ${REDSTORE}
-git pull origin
 if [ ! -f configure ]; then
 	./autogen.sh
 fi
