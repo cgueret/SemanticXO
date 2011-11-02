@@ -5,8 +5,8 @@ Created on 16 Sep 2011
 '''
 import os
 import sys
-sys.path.append(os.path.join(os.path.expanduser('~'), 'Code/SemanticXO/datastore/src'))
-sys.path.append(os.path.join(os.path.expanduser('~'), 'Code/SemanticXO/common/src'))
+#sys.path.append(os.path.join(os.path.expanduser('~'), 'Code/SemanticXO/datastore/src'))
+#sys.path.append(os.path.join(os.path.expanduser('~'), 'Code/SemanticXO/common/src'))
 
 from sugar import util
 from semanticxo.datastore import TripleStore
@@ -33,8 +33,8 @@ tags = open('lipsum/data/dictionary.txt').readlines()
 #CMD = "LD_LIBRARY_PATH=/opt/redstore:$LD_LIBRARY_PATH /opt/redstore/redstore"
 
 # On the PC
-CMD = "redstore"
-DIR = "/tmp/redstore"
+CMD = "LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./redstore"
+DIR = "./redstore-data"
 
 def generate_journal_entry(store):
     # Basic data
@@ -74,6 +74,7 @@ if __name__ == '__main__':
     file_space = open('output-space.csv', 'a')
     for run in range(0,10):
         print "Start store"
+        os.system("mkdir %s" % DIR)
         os.system("rm -f %s/*" % DIR)
         p = subprocess.Popen("%s -s hashes -t \"hash-type='bdb',dir='%s'\"" % (CMD, DIR), stdout=None, shell=True)
         time.sleep(1)
